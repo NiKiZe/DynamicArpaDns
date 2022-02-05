@@ -1,0 +1,24 @@
+name: Test
+on: [push]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Python dependencies
+        run: pip install black flake8 dnspython
+
+      - name: Python Linters
+        uses: wearerequired/lint-action@v1
+        with:
+          black: true
+          flake8: true
+
