@@ -25,6 +25,11 @@ class TestDynamicArpaDns(unittest.TestCase):
     def assertArpa(self, expected, arpa):
         self.assertEqual(ip_address(expected), self.get_arpa_ip(arpa))
 
+    def test_caseInsensitiveMatchSuffix(self):
+        q = DNSRecord.question("test.example.Com", "ANY")
+        self.assertTrue(q.q.qname.matchSuffix("example.Com"))
+        self.assertTrue(q.q.qname.matchSuffix("example.com"))
+
     def test_arpa(self):
         # long v6 address
         self.assertArpa(
@@ -40,6 +45,13 @@ class TestDynamicArpaDns(unittest.TestCase):
         self.assertArpa("192.0.2.3", "3.2.0.192.in-addr.arpa.")
         # invalid
         self.assertEqual(None, self.get_arpa_ip("x.arpa."))
+        # missmatch v6 case
+        self.assertArpa(
+            "2001:8bd:6::1",
+            "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.6.0.0.0.d.b.8.0.1.0.0.2.Ip6.ARpa.",
+        )
+        # missmatch v4 case
+        self.assertArpa("192.0.2.3", "3.2.0.192.in-addR.arPa.")
 
     # Test convert to and from arpa both v4 and v6
     # Test non correct number of parts for v4 and v6
