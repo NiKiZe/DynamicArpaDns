@@ -14,7 +14,11 @@ jobs:
           python-version: 3.9
 
       - name: Install Python dependencies
-        run: pip install black flake8 dnspython
+        run: |
+          pip install --upgrade pip
+          pip install black flake8 dnslib pytest
+          pip install pytest pytest-cov
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Python Linters
         uses: wearerequired/lint-action@v1
@@ -22,3 +26,6 @@ jobs:
           black: true
           flake8: true
 
+      - name: Test with pytest
+        run: |
+          pytest test_*.py --doctest-modules --junitxml=junit/test-results.xml --cov-report=xml --cov-report=html

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021 Christian Nilsson
+# Copyright 2021-2022 Christian Nilsson
 # https://github.com/NiKiZe/DynamicArpaDns
 
 from __future__ import print_function
@@ -202,11 +202,12 @@ if __name__ == "__main__":
     )
     args = p.parse_args()
 
+    print(args.map)
     resolver = Ip6Arpa(args.map, args.ns, args.address, args.ttl)
     logger = DNSLogger(args.log, args.log_prefix)
 
     print(
-        "Starting Dynamic arpa Resolver (%s:%d) [%s]"
+        "Starting Dynamic arpa Resolver ([%s]:%d) [%s]"
         % (args.address or "*", args.port, "UDP/TCP")
     )
 
@@ -232,7 +233,3 @@ if __name__ == "__main__":
 
     while udp_server.isAlive():
         time.sleep(1)
-
-    # Test Ip6.ARpa (must work case insensitive)
-    # Test convert to and from arpa both v4 and v6
-    # Test non correct number of parts for v4 and v6
