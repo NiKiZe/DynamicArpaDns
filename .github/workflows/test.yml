@@ -12,11 +12,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+          cache: 'pip'
 
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install black flake8 dnslib pytest
+          pip install black flake8 pytest
           pip install pytest pytest-cov
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
